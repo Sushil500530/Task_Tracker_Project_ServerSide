@@ -42,7 +42,16 @@ async function run() {
                 console.log(error);
             }
         })
-      
+        app.post('/task', async (req, res) => {
+            try {
+                const taskData = req.body;
+                const result = await tasksCollection.insertOne(taskData);
+                res.send(result)
+            }
+            catch (error) {
+                console.log(error);
+            }
+        })
         // await client.db("admin").command({ ping: 1 });
         console.log("Pinged your deployment. You successfully connected to MongoDB!");
     } finally {
