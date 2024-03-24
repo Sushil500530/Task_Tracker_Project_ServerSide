@@ -51,10 +51,29 @@ async function run() {
                 console.log(error);
             }
         })
+        app.put('/updated-task/:id', async (req, res) => {
+            try {
+                const id = req.params.id;
+                const updateData = req.body;
+                const query = { _id: new ObjectId(id) };
+                const options = { upsert: true };
+                const updateDoc = {
+                    $set: {
+                       ...updateData
+                    }
+                }
+                const result = await tasksCollection.updateOne(query, updateDoc,options);
+                res.send(result)
+            }
+            catch (error) {
+                console.log(error);
+            }
+        });
+
         app.delete('/delete-task/:id', async (req, res) => {
             try {
                 const id = req.params.id;
-                const query = {_id: new ObjectId(id)};
+                const query = { _id: new ObjectId(id) };
                 const result = await tasksCollection.deleteOne(query);
                 res.send(result)
             }
