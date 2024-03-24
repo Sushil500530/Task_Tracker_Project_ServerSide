@@ -8,7 +8,6 @@ const port = process.env.PORT || 5000;
 // middleware 
 app.use(cors({
     origin: [
-        "https://sushil-portfolio.surge.sh",
         "http://localhost:5173",
         "http://localhost:5174",
     ],
@@ -52,10 +51,20 @@ async function run() {
                 console.log(error);
             }
         })
+        app.delete('/delete-task/:id', async (req, res) => {
+            try {
+                const id = req.params.id;
+                const query = {_id: new ObjectId(id)};
+                const result = await tasksCollection.deleteOne(query);
+                res.send(result)
+            }
+            catch (error) {
+                console.log(error);
+            }
+        })
         // await client.db("admin").command({ ping: 1 });
         console.log("Pinged your deployment. You successfully connected to MongoDB!");
     } finally {
-        // Ensures that the client will close when you finish/error
         // await client.close();
     }
 }
